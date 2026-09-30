@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+<title>ELECTROPEDIA — By Rizky Wahyudo</title>
+<style>
+:root{
+  --bg:#06101c;--panel:#0b1828;--panel2:#0f2033;--line:#1b3550;
+  --text:#e8f2ff;--muted:#8da4bc;--blue:#28a9ff;--cyan:#48e6ff;
+  --green:#36d399;--yellow:#f4c95d;--red:#ff687d;--shadow:0 18px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 20% 0%,#102844 0,#06101c 38%,#040b13 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}.sidebar{width:260px;position:fixed;inset:0 auto 0 0;background:rgba(5,14,25,.94);border-right:1px solid var(--line);padding:22px 16px;z-index:20;backdrop-filter:blur(16px)}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:25px}.logo{width:43px;height:43px;border:1px solid #2a80b8;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#10304c,#071421);font-weight:900;color:var(--cyan);box-shadow:0 0 25px rgba(40,169,255,.15)}.brand b{display:block;font-size:17px;letter-spacing:.5px}.brand small{color:var(--muted)}
+.nav{display:grid;gap:6px}.nav button{background:transparent;border:1px solid transparent;color:#b9cce0;text-align:left;padding:11px 12px;border-radius:10px}.nav button:hover,.nav button.active{background:#0d2236;border-color:#1b405e;color:white}.nav button span{display:inline-block;width:25px}
+.side-note{position:absolute;bottom:20px;left:16px;right:16px;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.5}
+.main{margin-left:260px;width:calc(100% - 260px)}header{position:sticky;top:0;z-index:15;background:rgba(5,14,25,.76);backdrop-filter:blur(14px);border-bottom:1px solid rgba(27,53,80,.8);padding:12px 26px;display:flex;gap:12px;align-items:center}.global-search{flex:1;position:relative}.global-search input{width:100%;background:#091827;border:1px solid var(--line);color:white;border-radius:11px;padding:12px 15px 12px 40px;outline:none}.global-search input:focus{border-color:#278cc8;box-shadow:0 0 0 3px rgba(40,169,255,.08)}.search-icon{position:absolute;left:14px;top:11px;color:var(--muted)}
+.container{max-width:1500px;margin:auto;padding:28px}.page{display:none}.page.active{display:block}.hero{padding:42px 34px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,rgba(18,49,77,.8),rgba(8,22,36,.9));box-shadow:var(--shadow);overflow:hidden;position:relative}.hero:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;right:-100px;top:-120px;background:rgba(40,169,255,.08);filter:blur(5px)}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:2px}.hero h1{font-size:clamp(30px,5vw,62px);line-height:1;margin:12px 0}.hero p{max-width:780px;color:#adc2d7;font-size:16px;line-height:1.7}.search-big{display:flex;gap:9px;max-width:850px;margin-top:24px}.search-big input{flex:1;background:#06111e;border:1px solid #274765;border-radius:13px;color:#fff;padding:15px 16px;outline:none}.btn{border:1px solid #245273;background:#10304a;color:white;border-radius:10px;padding:10px 14px}.btn:hover{filter:brightness(1.14)}.btn.primary{background:linear-gradient(135deg,#0c82cc,#18b7dd);border-color:#35b8ee}.btn.green{background:#0d493d;border-color:#1d8e72}.btn.warn{background:#493b12;border-color:#8d7727}.btn.red{background:#4a1721;border-color:#9b3245}.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.quick button{background:#0b1d2e;border:1px solid #1b3c57;color:#a8c0d6;border-radius:999px;padding:7px 10px;font-size:12px}
+.section-title{display:flex;justify-content:space-between;align-items:end;margin:28px 0 14px}.section-title h2{margin:0;font-size:22px}.muted{color:var(--muted)}.grid{display:grid;gap:14px}.grid.cards{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}.grid.tools{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.card{background:linear-gradient(180deg,#0c1b2c,#091624);border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 10px 30px rgba(0,0,0,.12)}.card:hover{border-color:#2c5877}.card h3{margin:8px 0}.card p{color:#9eb3c8;line-height:1.55;font-size:13px}.iconbox{width:40px;height:40px;display:grid;place-items:center;border-radius:11px;background:#0c2940;border:1px solid #1d4b6a;font-size:20px}.badge{display:inline-block;font-size:10px;padding:4px 7px;border-radius:999px;background:#112c43;color:#73d8ff;border:1px solid #1c5577;margin:2px}.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.stat{padding:17px;border:1px solid var(--line);border-radius:14px;background:#091726}.stat b{font-size:25px}.stat small{display:block;color:var(--muted);margin-top:4px}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.category-card{padding:18px;background:#091827;border:1px solid var(--line);border-radius:15px}.category-card h3{margin:0 0 12px}.category-items{display:flex;flex-wrap:wrap;gap:6px}.category-items button{border:1px solid #21435d;background:#0b2032;color:#b8cde0;border-radius:8px;padding:6px 8px;font-size:11px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.toolbar input,.toolbar select,.field input,.field select,.field textarea{background:#081522;border:1px solid var(--line);color:#fff;border-radius:9px;padding:10px;outline:none}.toolbar input{min-width:230px;flex:1}
+.component-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px}.component-card{cursor:pointer}.component-top{display:flex;justify-content:space-between;gap:10px}.component-art{height:100px;margin:13px 0;background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(72,230,255,.04) 20px),#06111c;border:1px solid #163149;border-radius:11px;display:grid;place-items:center}.component-art svg{width:150px;height:75px}.spec-table{width:100%;border-collapse:collapse;margin-top:10px}.spec-table td,.spec-table th{border-bottom:1px solid #19334b;padding:8px;text-align:left;font-size:12px}.spec-table th{color:#7fcfff}.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:15px}.tabs button{background:transparent;border:0;color:#91a9bf;padding:10px 12px;border-bottom:2px solid transparent}.tabs button.active{color:#fff;border-color:var(--cyan)}
+.tool-layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.tool-box{background:#091827;border:1px solid var(--line);border-radius:15px;padding:18px}.field{display:grid;gap:6px;margin:9px 0}.field label{font-size:12px;color:#9bb1c5}.result{margin-top:12px;padding:12px;border-radius:10px;background:#06131f;border:1px solid #1c3a53;color:#bde8ff}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#06131f;padding:10px;border-radius:9px;color:#6fe3ff}.checklist label{display:block;padding:9px;border-bottom:1px solid #173047;color:#b9cadb}.checklist input{margin-right:8px}
+.quiz-option{display:block;width:100%;text-align:left;margin:7px 0;padding:12px;border-radius:9px;background:#0b1d2d;border:1px solid #21445f;color:#d9e8f5}.quiz-option.correct{border-color:var(--green);background:#0c3b31}.quiz-option.wrong{border-color:var(--red);background:#421824}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.open{display:flex}.modal-card{width:min(980px,100%);max-height:90vh;overflow:auto;background:#071320;border:1px solid #294d6a;border-radius:18px;padding:22px;box-shadow:var(--shadow)}.modal-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.close{background:#101f2e;border:1px solid #28445b;color:#b9cce0;border-radius:9px;padding:8px 12px}
+.notice{padding:11px 13px;border-radius:10px;background:#10263a;border-left:3px solid var(--blue);color:#b8cede;font-size:12px;line-height:1.6}.danger{border-left-color:var(--red);background:#28131b}.success{border-left-color:var(--green);background:#0e2923}
+.empty{padding:40px;text-align:center;border:1px dashed #29465d;border-radius:14px;color:var(--muted)}
+footer{margin-top:40px;padding:25px 0;color:#71879b;border-top:1px solid var(--line);font-size:12px}
+@media(max-width:900px){.sidebar{width:76px;padding:18px 9px}.brand div:not(.logo),.nav button span+*,.side-note{display:none}.brand{justify-content:center}.nav button{text-align:center;padding:12px}.nav button span{width:auto}.main{margin-left:76px;width:calc(100% - 76px)}.container{padding:18px}.statgrid{grid-template-columns:repeat(2,1fr)}.tool-layout{grid-template-columns:1fr}}
+@media(max-width:600px){header{padding:10px}.container{padding:12px}.hero{padding:27px 18px}.search-big{flex-direction:column}.statgrid{grid-template-columns:1fr 1fr}.stat b{font-size:20px}.component-grid{grid-template-columns:1fr}.grid.cards{grid-template-columns:1fr}.hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">EP</div><div><b>ELECTROPEDIA</b><small>By Rizky Wahyudo</small></div></div>
+  <nav class="nav">
+    <button data-page="home" class="active"><span>⌂</span> Beranda</button>
+    <button data-page="components"><span>▦</span> Komponen</button>
+    <button data-page="pinout"><span>⌁</span> Pinout</button>
+    <button data-page="multimeter"><span>🧪</span> Multimeter</button>
+    <button data-page="calculator"><span>∑</span> Kalkulator</button>
+    <button data-page="decoder"><span>⌘</span> Code Decoder</button>
+    <button data-page="troubleshoot"><span>⚙</span> Troubleshooting</button>
+    <button data-page="learning"><span>📚</span> Learning</button>
+    <button data-page="quiz"><span>✓</span> Quiz</button>
+    <button data-page="arcade"><span>🕹</span> Arcade Lab</button>
+    <button data-page="bookmark"><span>★</span> Bookmark</button>
+    <button data-page="admin"><span>⚙</span> Admin Demo</button>
+  </nav>
+  <div class="side-note">⚠️ Data contoh pada demo ini bersifat edukasi. Selalu cocokkan spesifikasi, pinout, dan datasheet dengan part/manufacturer yang tepat sebelum memperbaiki perangkat.</div>
+</aside>
+
+<main class="main">
+<header>
+  <div class="global-search"><span class="search-icon">⌕</span><input id="globalSearch" placeholder="Cari komponen, part number, marking, kategori..."></div>
+  <button class="btn" id="themeBtn" title="Mode tampilan">◐</button>
+</header>
+
+<div class="container">
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="eyebrow">ELECTRONICS KNOWLEDGE PLATFORM</div>
+    <h1>KENALI SEMUA<br>KOMPONEN ELEKTRONIKA</h1>
+    <p>Pelajari fungsi, cara kerja, pinout, pengukuran, karakteristik, troubleshooting, dan aplikasi berbagai komponen elektronika dalam satu tempat.</p>
+    <div class="search-big"><input id="homeSearch" placeholder="🔍 Cari 7805, LM358, IRFZ44N, resistor, MOSFET..."><button class="btn primary" onclick="doSearch()">CARI KOMPONEN</button></div>
+    <div class="quick">
+      <button onclick="quickSearch('7805')">7805</button><button onclick="quickSearch('LM358')">LM358</button><button onclick="quickSearch('IRFZ44N')">IRFZ44N</button><button onclick="quickSearch('2N2222')">2N2222</button><button onclick="quickSearch('NE555')">NE555</button><button onclick="quickSearch('ULN2003')">ULN2003</button>
+    </div>
+  </div>
+  <div class="statgrid">
+    <div class="stat"><b id="statComponents">0</b><small>Komponen demo</small></div>
+    <div class="stat"><b>9</b><small>Modul utama</small></div>
+    <div class="stat"><b>20+</b><small>Tools & panduan</small></div>
+    <div class="stat"><b>4</b><small>Level pembelajaran</small></div>
+  </div>
+  <div class="section-title"><h2>Jelajahi Pengetahuan</h2></div>
+  <div class="grid cards" id="homeTools"></div>
+  <div class="section-title"><h2>Komponen Populer</h2><button class="btn" onclick="showPage('components')">Lihat semua →</button></div>
+  <div class="component-grid" id="popularComponents"></div>
+</section>
+
+<section id="components" class="page">
+  <div class="section-title"><div><h2>Database Komponen</h2><div class="muted">Cari berdasarkan nama, part number, marking, package, atau fungsi.</div></div></div>
+  <div class="toolbar"><input id="componentSearch" placeholder="Cari komponen..."><select id="categoryFilter"><option value="">Semua kategori</option></select><select id="packageFilter"><option value="">Semua package</option></select></div>
+  <div class="component-grid" id="componentGrid"></div>
+</section>
+
+<section id="pinout" class="page">
+  <div class="section-title"><div><h2>🔌 Pinout Database</h2><div class="muted">Cari IC, transistor, MOSFET, regulator, dan komponen lainnya.</div></div></div>
+  <div class="toolbar"><input id="pinoutSearch" placeholder="Cari LM358, 7805, 2N2222..."></div>
+  <div id="pinoutResult"></div>
+</section>
+
+<section id="multimeter" class="page">
+  <div class="section-title"><div><h2>🧪 Multimeter Lab</h2><div class="muted">Panduan dasar mengukur komponen dengan aman.</div></div></div>
+  <div class="notice danger">Keselamatan: matikan daya sebelum mengukur resistansi, continuity, diode, dan transistor. Untuk kapasitor, pastikan sudah dilepaskan muatannya. Pada rangkaian AC/tegangan tinggi, gunakan prosedur keselamatan yang sesuai.</div>
+  <div class="grid cards" id="meterCards"></div>
+</section>
+
+<section id="calculator" class="page">
+  <div class="section-title"><div><h2>🧮 Electronics Calculator</h2><div class="muted">Kalkulator praktis untuk teknisi dan pembelajar.</div></div></div>
+  <div class="tool-layout">
+    <div class="tool-box"><h3>Ohm's Law</h3><div class="formula">V = I × R</div><div class="field"><label>Tegangan V (V)</label><input id="ohmV" type="number"></div><div class="field"><label>Arus I (A)</label><input id="ohmI" type="number"></div><div class="field"><label>Resistansi R (Ω)</label><input id="ohmR" type="number"></div><button class="btn primary" onclick="calcOhm()">Hitung nilai kosong</button><div class="result" id="ohmOut">Masukkan dua nilai.</div></div>
+    <div class="tool-box"><h3>LED Resistor</h3><div class="field"><label>Supply (V)</label><input id="ledVs" type="number" value="12"></div><div class="field"><label>Forward LED (V)</label><input id="ledVf" type="number" value="2"></div><div class="field"><label>Arus LED (mA)</label><input id="ledMa" type="number" value="20"></div><button class="btn primary" onclick="calcLed()">Hitung</button><div class="result" id="ledOut">—</div></div>
+    <div class="tool-box"><h3>Voltage Divider</h3><div class="field"><label>Vin (V)</label><input id="vdVin" type="number" value="12"></div><div class="field"><label>R1 (Ω)</label><input id="vdR1" type="number" value="10000"></div><div class="field"><label>R2 (Ω)</label><input id="vdR2" type="number" value="10000"></div><button class="btn primary" onclick="calcDivider()">Hitung Vout</button><div class="result" id="vdOut">—</div></div>
+    <div class="tool-box"><h3>Battery Runtime</h3><div class="field"><label>Kapasitas (Ah)</label><input id="batAh" type="number" value="10"></div><div class="field"><label>Beban (W)</label><input id="batW" type="number" value="50"></div><div class="field"><label>Tegangan (V)</label><input id="batV" type="number" value="12"></div><div class="field"><label>Efisiensi (%)</label><input id="batEff" type="number" value="85"></div><button class="btn primary" onclick="calcBattery()">Hitung</button><div class="result" id="batOut">—</div></div>
+    <div class="tool-box"><h3>RC Time Constant</h3><div class="field"><label>R (Ω)</label><input id="rcR" type="number" value="10000"></div><div class="field"><label>C (µF)</label><input id="rcC" type="number" value="100"></div><button class="btn primary" onclick="calcRC()">Hitung τ</button><div class="result" id="rcOut">—</div></div>
+    <div class="tool-box"><h3>Resistor Parallel</h3><div class="field"><label>R1 (Ω)</label><input id="rp1" type="number" value="1000"></div><div class="field"><label>R2 (Ω)</label><input id="rp2" type="number" value="2200"></div><button class="btn primary" onclick="calcParallel()">Hitung</button><div class="result" id="rpOut">—</div></div>
+  </div>
+</section>
+
+<section id="decoder" class="page">
+  <div class="section-title"><div><h2>⌘ Component Code Decoder</h2><div class="muted">Decode resistor SMD dan kode kapasitor dasar.</div></div></div>
+  <div class="tool-layout">
+    <div class="tool-box"><h3>SMD Resistor Code</h3><p class="muted">Contoh: 103 → 10 × 10³ Ω = 10 kΩ. Untuk kode 4 digit, tiga digit pertama adalah angka signifikan.</p><div class="field"><label>Kode</label><input id="smdCode" value="103"></div><button class="btn primary" onclick="decodeSmd()">Decode</button><div class="result" id="smdOut">—</div></div>
+    <div class="tool-box"><h3>Capacitor Code</h3><p class="muted">Contoh kode 104 pada keramik umum berarti 100 nF (dalam pF: 10 × 10⁴ pF).</p><div class="field"><label>Kode 3 digit</label><input id="capCode" value="104"></div><button class="btn primary" onclick="decodeCap()">Decode</button><div class="result" id="capOut">—</div></div>
+    <div class="tool-box"><h3>Resistor Color Code</h3><div class="field"><label>Gelang 1</label><select id="c1"></select></div><div class="field"><label>Gelang 2</label><select id="c2"></select></div><div class="field"><label>Multiplier</label><select id="c3"></select></div><div class="field"><label>Tolerance</label><select id="c4"></select></div><button class="btn primary" onclick="decodeColor()">Hitung</button><div class="result" id="colorOut">—</div></div>
+  </div>
+</section>
+
+<section id="troubleshoot" class="page">
+  <div class="section-title"><div><h2>🔧 Troubleshooting Assistant</h2><div class="muted">Pilih gejala untuk mendapatkan urutan pemeriksaan.</div></div></div>
+  <div class="grid cards" id="symptomCards"></div>
+  <div class="tool-box" style="margin-top:15px"><h3>Checklist Power Supply Mati</h3><div class="checklist" id="powerChecklist">
+    <label><input type="checkbox">Periksa fuse dan kontinuitas jalur input.</label>
+    <label><input type="checkbox">Periksa tegangan input AC/DC sesuai desain.</label>
+    <label><input type="checkbox">Periksa bridge rectifier / diode penyearah.</label>
+    <label><input type="checkbox">Periksa kapasitor bulk dan tanda kerusakan fisik.</label>
+    <label><input type="checkbox">Periksa MOSFET/switching transistor dari kemungkinan short.</label>
+    <label><input type="checkbox">Periksa IC PWM/controller.</label>
+    <label><input type="checkbox">Periksa diode sekunder dan kapasitor output.</label>
+    <label><input type="checkbox">Periksa feedback/optocoupler bila digunakan.</label>
+  </div></div>
+</section>
+
+<section id="learning" class="page">
+  <div class="section-title"><div><h2>📚 Learning Mode</h2><div class="muted">Belajar dari konsep dasar sampai troubleshooting tingkat teknisi.</div></div></div>
+  <div class="grid cards" id="learningCards"></div>
+</section>
+
+<section id="quiz" class="page">
+  <div class="section-title"><div><h2>✓ Electronics Quiz</h2><div class="muted">Uji pemahamanmu.</div></div><div class="badge" id="quizScore">Skor: 0</div></div>
+  <div class="tool-box" id="quizBox"></div>
+</section>
+
+<section id="arcade" class="page">
+  <div class="section-title"><div><h2>🕹 Arcade Technician Lab</h2><div class="muted">Referensi troubleshooting elektronik untuk mesin arcade/game machine.</div></div></div>
+  <div class="grid cards" id="arcadeCards"></div>
+  <div class="tool-box" style="margin-top:15px"><h3>Arcade PCB Troubleshooting Flow</h3><div class="checklist">
+    <label><input type="checkbox">Pastikan power supply memiliki output sesuai spesifikasi.</label>
+    <label><input type="checkbox">Periksa ground dan konektor utama/JAMMA.</label>
+    <label><input type="checkbox">Periksa rail 5V/12V dan ripple bila alat tersedia.</label>
+    <label><input type="checkbox">Periksa fuse, regulator, diode, dan komponen power.</label>
+    <label><input type="checkbox">Jika communication error, periksa kabel, konektor, terminasi, dan transceiver.</label>
+    <label><input type="checkbox">Bandingkan board yang normal dengan board bermasalah.</label>
+    <label><input type="checkbox">Cari IC yang abnormal panas dengan prosedur aman.</label>
+  </div></div>
+</section>
+
+<section id="bookmark" class="page">
+  <div class="section-title"><div><h2>★ My Components</h2><div class="muted">Komponen yang kamu simpan di browser ini.</div></div></div>
+  <div id="bookmarkGrid" class="component-grid"></div>
+</section>
+
+<section id="admin" class="page">
+  <div class="section-title"><div><h2>⚙ Admin Demo</h2><div class="muted">Demo editor lokal menggunakan localStorage. Belum terhubung ke server/database.</div></div></div>
+  <div class="tool-box">
+    <h3>Tambah Komponen Demo</h3>
+    <div class="tool-layout">
+      <div><div class="field"><label>Nama</label><input id="newName"></div><div class="field"><label>Part Number</label><input id="newPart"></div><div class="field"><label>Kategori</label><input id="newCat" value="Custom"></div></div>
+      <div><div class="field"><label>Package</label><input id="newPkg" value="—"></div><div class="field"><label>Fungsi</label><textarea id="newFunc" rows="4"></textarea></div><button class="btn green" onclick="addComponent()">＋ Tambah ke database lokal</button></div>
+    </div>
+  </div>
+  <div class="section-title"><h2>Data lokal tambahan</h2></div><div id="adminList"></div>
+</section>
+
+<footer>
+  <b>ELECTROPEDIA — By Rizky Wahyudo</b><br>
+  Kenali. Ukur. Pahami. Perbaiki. • Single-file educational demo • Gunakan datasheet resmi untuk verifikasi akhir.
+</footer>
+</div>
+</main>
+</div>
+
+<div class="modal" id="componentModal"><div class="modal-card"><div class="modal-head"><div id="modalTitle"></div><button class="close" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
+
+<script>
+const seedComponents=[
+{name:"LM7805",partNumber:"LM7805 / 7805",category:"IC",subcategory:"Voltage Regulator",package:"TO-220",manufacturer:"Beragam",technology:"Linear Regulator",status:"Umum",function:"Regulator linear untuk menghasilkan rail tegangan sekitar 5 V pada varian yang sesuai.",working:"Regulator menggunakan umpan balik internal untuk menjaga tegangan output. Selisih tegangan input-output berubah menjadi panas.",spec:{Input:"Bergantung varian/datasheet",Output:"5 V nominal",Current:"Bergantung manufacturer/package",Power:"Perlu memperhatikan disipasi panas",Package:"TO-220"},pins:["1 — IN","2 — GND","3 — OUT"],apps:["Logic circuit","Sensor","Mikrokontroler"],fail:["Terlalu panas","Output drop","Short pada beban"],tags:["7805","regulator","5v","to-220"]},
+{name:"LM358",partNumber:"LM358",category:"IC",subcategory:"Op-Amp",package:"DIP-8 / SOIC-8",manufacturer:"Beragam",technology:"Dual Op-Amp",status:"Umum",function:"Dual operational amplifier untuk penguatan, buffer, filter aktif, comparator sederhana, dan pengkondisi sinyal.",working:"Op-amp membandingkan dua input dan mengubah output berdasarkan selisihnya dengan gain open-loop yang sangat tinggi.",spec:{Channels:"2 op-amp",Supply:"Bergantung varian",Package:"DIP-8 / SOIC-8",Pins:"8"},pins:["1 — OUT A","2 — IN− A","3 — IN+ A","4 — V−/GND","5 — IN+ B","6 — IN− B","7 — OUT B","8 — V+"],apps:["Signal conditioning","Amplifier","Active filter"],fail:["Output saturasi","Input/output abnormal","IC panas"],tags:["lm358","opamp","op-amp","ic"]},
+{name:"IRFZ44N",partNumber:"IRFZ44N",category:"Semikonduktor",subcategory:"N-Channel MOSFET",package:"TO-220",manufacturer:"Beragam",technology:"N-MOSFET",status:"Umum",function:"MOSFET daya untuk switching beban seperti motor, lampu, dan converter pada kondisi yang sesuai.",working:"Tegangan gate mengendalikan kanal konduktif antara drain dan source. RDS(on) dan drive gate sangat menentukan rugi daya.",spec:{Type:"N-Channel MOSFET",VDS:"55 V class",Current:"Tergantung kondisi/datasheet",RDSon:"Tergantung manufacturer/test condition",Package:"TO-220"},pins:["1 — G","2 — D","3 — S"],apps:["Motor switching","LED driver","Power switching"],fail:["D-S short","Gate damage","Overheating"],tags:["irfz44n","mosfet","to-220","power"]},
+{name:"IRF3205",partNumber:"IRF3205",category:"Semikonduktor",subcategory:"N-Channel MOSFET",package:"TO-220",manufacturer:"Beragam",technology:"N-MOSFET",status:"Umum",function:"MOSFET daya untuk switching dengan arus tinggi pada kondisi termal dan gate-drive yang tepat.",working:"Gate mengontrol kanal drain-source. Nilai RDS(on), temperatur, gate voltage, dan layout menentukan performa nyata.",spec:{Type:"N-Channel MOSFET",VDS:"55 V class",Current:"Tergantung kondisi/datasheet",RDSon:"Tergantung manufacturer/test condition",Package:"TO-220"},pins:["1 — G","2 — D","3 — S"],apps:["Motor controller","DC switching","Power electronics"],fail:["D-S short","Gate puncture","Overheating"],tags:["irf3205","mosfet","to-220"]},
+{name:"2N2222",partNumber:"2N2222",category:"Semikonduktor",subcategory:"BJT NPN",package:"TO-92 / variasi",manufacturer:"Beragam",technology:"NPN BJT",status:"Umum",function:"Transistor NPN serbaguna untuk switching sinyal kecil dan penguatan.",working:"Arus basis mengendalikan arus collector. Pinout dapat berbeda menurut manufacturer/package, jadi wajib cek datasheet.",spec:{Type:"NPN",VCEO:"Bergantung varian",IC:"Bergantung varian",hFE:"Bergantung kondisi",Package:"TO-92 / variasi"},pins:["Pinout dapat berbeda — cek datasheet part spesifik"],apps:["Switch","Amplifier","Driver"],fail:["C-E short","Leakage","Gain turun"],tags:["2n2222","transistor","bjt","npn"]},
+{name:"BC547",partNumber:"BC547",category:"Semikonduktor",subcategory:"BJT NPN",package:"TO-92",manufacturer:"Beragam",technology:"NPN BJT",status:"Umum",function:"Transistor NPN sinyal kecil untuk switching dan penguatan.",working:"Arus basis mengendalikan arus collector. Pinout harus diverifikasi terhadap manufacturer/package.",spec:{Type:"NPN",Package:"TO-92",Use:"Small signal"},pins:["1 — C/B/E bergantung orientasi/varian; cek datasheet"],apps:["Switch","Amplifier","Sensor interface"],fail:["C-E short","Leakage"],tags:["bc547","transistor","npn"]},
+{name:"NE555",partNumber:"NE555 / LM555",category:"IC",subcategory:"Timer",package:"DIP-8 / SOIC-8",manufacturer:"Beragam",technology:"Timer",status:"Umum",function:"Timer serbaguna untuk menghasilkan delay, pulse, osilasi, dan PWM sederhana.",working:"Menggunakan comparator, flip-flop, discharge transistor, dan pembagi tegangan internal.",spec:{Type:"Timer",Pins:"8",Modes:"Astable / Monostable",Package:"DIP-8 / SOIC-8"},pins:["1 — GND","2 — TRIG","3 — OUT","4 — RESET","5 — CTRL","6 — THRESH","7 — DISCH","8 — VCC"],apps:["Oscillator","Pulse generator","Timer"],fail:["Output tidak berosilasi","IC panas"],tags:["ne555","555","timer","ic"]},
+{name:"ULN2003",partNumber:"ULN2003",category:"IC",subcategory:"Darlington Driver",package:"DIP-16 / SOP-16",manufacturer:"Beragam",technology:"Darlington Array",status:"Umum",function:"Array driver transistor untuk mengendalikan relay, solenoid, lampu, dan beban lain sesuai rating.",working:"Beberapa pasangan Darlington dikendalikan oleh input logika; tersedia jalur clamp pada varian tertentu.",spec:{Channels:"7",Type:"Darlington Array",Package:"DIP-16 / SOP-16"},pins:["Input 1–7","Output 1–7","GND","COM — fungsi bergantung varian"],apps:["Relay driver","Solenoid","Motor/actuator"],fail:["Output short","Channel mati"],tags:["uln2003","driver","relay"]},
+{name:"1N4007",partNumber:"1N4007",category:"Semikonduktor",subcategory:"Rectifier Diode",package:"DO-41",manufacturer:"Beragam",technology:"PN Diode",status:"Umum",function:"Dioda penyearah untuk aplikasi daya frekuensi rendah sesuai rating.",working:"Mengalirkan arus terutama pada arah forward dan memblokir pada arah reverse dalam batas rating.",spec:{Type:"Rectifier diode",VRRM:"1000 V class",Package:"DO-41"},pins:["Anode — A","Cathode — K (stripe)"],apps:["Rectifier","Protection","Flyback sederhana sesuai kebutuhan"],fail:["Short","Open","Leakage"],tags:["1n4007","diode","rectifier"]},
+{name:"PC817",partNumber:"PC817",category:"Semikonduktor",subcategory:"Optocoupler",package:"DIP-4 / SMD variants",manufacturer:"Beragam",technology:"Optocoupler",status:"Umum",function:"Isolasi sinyal menggunakan LED dan phototransistor.",working:"LED internal memancarkan cahaya ke phototransistor sehingga sinyal dapat dipindahkan tanpa koneksi listrik langsung antara sisi input dan output.",spec:{Type:"Phototransistor optocoupler",Pins:"4",Package:"DIP-4 / variants"},pins:["1 — LED A","2 — LED K","3 — Collector","4 — Emitter"],apps:["Isolation","Feedback SMPS","Interface"],fail:["LED open","CTR turun","Output tidak switching"],tags:["pc817","optocoupler","isolation"]},
+{name:"AMS1117-5.0",partNumber:"AMS1117-5.0",category:"IC",subcategory:"LDO Regulator",package:"SOT-223",manufacturer:"Beragam",technology:"LDO",status:"Umum",function:"Regulator linear low-dropout untuk menghasilkan output 5 V pada varian yang sesuai.",working:"Regulator menjaga output dengan feedback internal; disipasi panas meningkat ketika beda Vin-Vout dan arus besar.",spec:{Output:"5 V nominal untuk varian 5.0",Package:"SOT-223",Type:"LDO"},pins:["1 — GND","2 — OUT","3 — IN"],apps:["Embedded board","Sensor","Logic supply"],fail:["Dropout","Overheating","Short"],tags:["ams1117","ldo","5v","regulator"]},
+{name:"Relay 5V",partNumber:"Generic 5V Relay",category:"Elektromekanis",subcategory:"Relay",package:"THT module/relay",manufacturer:"Beragam",technology:"Electromechanical",status:"Umum",function:"Sakelar yang digerakkan kumparan untuk mengendalikan beban terpisah.",working:"Arus pada coil menghasilkan medan magnet yang menggerakkan kontak mekanis.",spec:{Coil:"5 V nominal untuk varian ini",Contacts:"Tergantung model",Package:"Tergantung model"},pins:["Coil + / −","COM","NO","NC — tergantung model"],apps:["Control","Isolation","Actuator"],fail:["Coil open","Contact burnt","Stuck"],tags:["relay","5v","electromechanical"]},
+{name:"LDR",partNumber:"Photoresistor/LDR",category:"Sensor",subcategory:"Light Sensor",package:"THT",manufacturer:"Beragam",technology:"Photoresistor",status:"Umum",function:"Resistansi berubah mengikuti intensitas cahaya.",working:"Cahaya mengubah konduktivitas material fotoresistif sehingga resistansinya berubah.",spec:{Type:"Variable resistance",Response:"Bergantung material",Package:"THT"},pins:["2 — non-polar"],apps:["Light sensing","Automatic lamp","Detector"],fail:["Resistansi tidak berubah","Physical damage"],tags:["ldr","sensor","light"]},
+{name:"NTC Thermistor",partNumber:"NTC 10K",category:"Sensor",subcategory:"Temperature Sensor",package:"THT/SMD",manufacturer:"Beragam",technology:"Thermistor",status:"Umum",function:"Resistansi menurun ketika temperatur naik pada NTC.",working:"Perubahan temperatur mengubah resistansi material semikonduktor.",spec:{Type:"NTC",R25:"Contoh 10 kΩ untuk varian tertentu",Package:"Tergantung model"},pins:["2 — non-polar"],apps:["Temperature sensing","Inrush limiting"],fail:["Open","Resistance drift"],tags:["ntc","thermistor","temperature"]},
+{name:"Potensiometer 10K",partNumber:"10K Potentiometer",category:"Komponen Pasif",subcategory:"Potensiometer",package:"THT",manufacturer:"Beragam",technology:"Variable Resistor",status:"Umum",function:"Resistor variabel tiga terminal untuk pembagi tegangan atau kontrol level.",working:"Wiper bergerak sepanjang elemen resistif sehingga rasio resistansi berubah.",spec:{Resistance:"10 kΩ nominal untuk varian ini",Terminals:"3",Package:"THT"},pins:["1 — End","2 — Wiper","3 — End"],apps:["Volume","Setpoint","Voltage divider"],fail:["Wiper noisy","Open track"],tags:["pot","potensiometer","10k"]},
+{name:"Bridge Rectifier",partNumber:"KBPC / Bridge Rectifier",category:"Power Electronics",subcategory:"Bridge Rectifier",package:"THT",manufacturer:"Beragam",technology:"Diode Bridge",status:"Umum",function:"Menyearahkan AC menjadi DC menggunakan empat diode dalam konfigurasi bridge.",working:"Dua diode konduksi pada setiap setengah siklus sehingga polaritas output DC tetap.",spec:{Type:"Full-wave bridge",Ratings:"Bergantung part",Package:"Bergantung part"},pins:["~ AC","~ AC","+ DC","− DC"],apps:["Power supply","Rectifier"],fail:["Short","Open diode"],tags:["bridge","rectifier","power"]},
+{name:"Resistor 10K",partNumber:"R 10K",category:"Komponen Pasif",subcategory:"Resistor",package:"THT/SMD",manufacturer:"Beragam",technology:"Passive",status:"Umum",function:"Membatasi arus, membuat pembagi tegangan, pull-up/pull-down, dan bias.",working:"Mengubah energi listrik menjadi panas sesuai P=I²R atau P=V²/R.",spec:{Resistance:"10 kΩ",Tolerance:"Bergantung part",Power:"Bergantung package"},pins:["2 — non-polar"],apps:["Pull-up","Voltage divider","Current limiting"],fail:["Open","Value drift","Burn"],tags:["resistor","10k","passive"]},
+{name:"Capacitor 100nF",partNumber:"C 100nF",category:"Komponen Pasif",subcategory:"Ceramic Capacitor",package:"THT/SMD",manufacturer:"Beragam",technology:"Ceramic",status:"Umum",function:"Decoupling, filtering, coupling, dan penyimpanan muatan kecil.",working:"Menyimpan energi dalam medan listrik di antara elektroda.",spec:{Capacitance:"100 nF nominal",Voltage:"Bergantung part",Type:"Ceramic"},pins:["2 — non-polar"],apps:["Decoupling","Noise filtering"],fail:["Short","Open","Capacitance drift"],tags:["capacitor","100nf","ceramic"]}
+];
+
+const categories={
+"Komponen Pasif":["Resistor","Variable Resistor","Potensiometer","Trimpot","Thermistor","LDR","Kapasitor","Ceramic Capacitor","Electrolytic Capacitor","Film Capacitor","Tantalum Capacitor","Induktor","Choke","Transformer"],
+"Semikonduktor":["Diode","Rectifier Diode","Schottky Diode","Zener Diode","LED","Photodiode","TVS Diode","Transistor BJT","JFET","MOSFET","IGBT","SCR","TRIAC","DIAC"],
+"IC":["Op-Amp","Comparator","Timer","Regulator","Logic IC","ADC","DAC","Driver IC","Audio IC","Power Management IC","Motor Driver","EEPROM","Flash Memory","Microcontroller"],
+"Elektromekanis":["Relay","Switch","Push Button","Reed Switch","Solenoid","Motor","Servo","Stepper Motor","Fan"],
+"Sensor":["Temperature Sensor","Humidity Sensor","Pressure Sensor","Light Sensor","Proximity Sensor","IR Sensor","Ultrasonic Sensor","Hall Effect Sensor","Accelerometer","Gyroscope","Gas Sensor","Current Sensor","Voltage Sensor"],
+"Display":["7 Segment","LCD","OLED","TFT","LED Matrix","VFD"],
+"Power Electronics":["Bridge Rectifier","SMPS","DC-DC Converter","Buck Converter","Boost Converter","Buck-Boost","Inverter","Voltage Regulator","Current Regulator","Power MOSFET","IGBT"],
+"RF & Communication":["Antenna","RF Module","Bluetooth Module","WiFi Module","GSM Module","GPS Module","NFC","LoRa"],
+"Connector":["JST","Molex","Dupont","USB","HDMI","RJ45","RCA","BNC","Terminal Block"]
+};
+
+let components=[...seedComponents,...JSON.parse(localStorage.getItem("electropedia_extra")||"[]")];
+let bookmarks=JSON.parse(localStorage.getItem("electropedia_bookmarks")||"[]");
+
+const navButtons=document.querySelectorAll(".nav button");
+navButtons.forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const p=document.getElementById(id); if(p)p.classList.add("active");
+ navButtons.forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="components") renderComponents();
+ if(id==="bookmark") renderBookmarks();
+ if(id==="admin") renderAdmin();
+}
+function quickSearch(q){document.getElementById("homeSearch").value=q;doSearch()}
+function doSearch(){const q=document.getElementById("homeSearch").value.trim();showPage("components");document.getElementById("componentSearch").value=q;renderComponents()}
+document.getElementById("globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){document.getElementById("homeSearch").value=e.target.value;doSearch()}});
+document.getElementById("componentSearch").addEventListener("input",renderComponents);
+document.getElementById("categoryFilter").addEventListener("change",renderComponents);
+document.getElementById("packageFilter").addEventListener("change",renderComponents);
+document.getElementById("pinoutSearch").addEventListener("input",renderPinout);
+
+function cardArt(c){
+ return `<div class="component-art"><svg viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <path d="M10 40H38M122 40H150" stroke="#48e6ff" stroke-width="2"/>
+ <rect x="38" y="22" width="84" height="36" rx="4" stroke="#48e6ff" opacity=".8"/>
+ <path d="M52 22V10M68 22V10M84 22V10M100 22V10M116 22V10M52 58V70M68 58V70M84 58V70M100 58V70M116 58V70" stroke="#28a9ff"/>
+ <text x="80" y="44" text-anchor="middle" fill="#dff8ff" font-size="9" font-family="Arial">${escapeHtml(c.partNumber.slice(0,16))}</text></svg></div>`;
+}
+function componentCard(c){
+ const saved=bookmarks.includes(c.partNumber);
+ return `<div class="card component-card" onclick="openComponent('${esc(c.partNumber)}')">${cardArt(c)}
+ <div class="component-top"><div><h3>${escapeHtml(c.name)}</h3><span class="badge">${escapeHtml(c.category)}</span><span class="badge">${escapeHtml(c.package)}</span></div><button class="btn" onclick="event.stopPropagation();toggleBookmark('${esc(c.partNumber)}')">${saved?"★":"☆"}</button></div>
+ <p>${escapeHtml(c.function)}</p><small class="muted">${escapeHtml(c.partNumber)}</small></div>`;
+}
+function renderComponents(){
+ const q=(document.getElementById("componentSearch").value||"").toLowerCase().trim(),cat=document.getElementById("categoryFilter").value,pkg=document.getElementById("packageFilter").value;
+ let list=components.filter(c=>{const hay=[c.name,c.partNumber,c.category,c.subcategory,c.package,c.manufacturer,c.function,...(c.tags||[])].join(" ").toLowerCase();return(!q||hay.includes(q))&&(!cat||c.category===cat)&&(!pkg||c.package===pkg)});
+ document.getElementById("componentGrid").innerHTML=list.length?list.map(componentCard).join(""):`<div class="empty">Komponen tidak ditemukan.<br><br>Coba nama, marking, part number, atau kategori lain.</div>`;
+}
+function openComponent(part){
+ const c=components.find(x=>x.partNumber===part); if(!c)return;
+ const specs=Object.entries(c.spec||{}).map(([k,v])=>`<tr><th>${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`).join("");
+ const pins=(c.pins||[]).map((p,i)=>`<div class="badge">${escapeHtml(p)}</div>`).join("");
+ document.getElementById("modalTitle").innerHTML=`<div><div class="eyebrow">${escapeHtml(c.category)} / ${escapeHtml(c.subcategory)}</div><h2 style="margin:6px 0">${escapeHtml(c.name)}</h2><div class="muted">${escapeHtml(c.partNumber)}</div></div>`;
+ document.getElementById("modalBody").innerHTML=`
+ ${cardArt(c)}
+ <div class="tabs"><button class="active">Overview</button><button>Pinout</button><button>Specifications</button><button>Testing</button><button>Applications</button></div>
+ <div class="notice"><b>Catatan data:</b> spesifikasi part nyata dapat berbeda menurut manufacturer, revision, package, dan kondisi pengujian. Cocokkan dengan datasheet resmi.</div>
+ <h3>Fungsi</h3><p class="muted">${escapeHtml(c.function)}</p>
+ <h3>Cara Kerja</h3><p class="muted">${escapeHtml(c.working)}</p>
+ <h3>Pinout</h3><div>${pins}</div>
+ <h3>Spesifikasi</h3><table class="spec-table">${specs}</table>
+ <h3>Aplikasi</h3><div>${(c.apps||[]).map(x=>`<span class="badge">${escapeHtml(x)}</span>`).join("")}</div>
+ <h3>Gejala/Kegagalan yang Perlu Diperiksa</h3><ul class="muted">${(c.fail||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
+ <div class="notice danger">Sebelum mengganti komponen, verifikasi pinout, rating tegangan/arus, package, thermal condition, dan datasheet part spesifik.</div>
+ `;
+ document.getElementById("componentModal").classList.add("open");
+}
+function closeModal(){document.getElementById("componentModal").classList.remove("open")}
+document.getElementById("componentModal").addEventListener("click",e=>{if(e.target.id==="componentModal")closeModal()});
+function toggleBookmark(part){bookmarks=bookmarks.includes(part)?bookmarks.filter(x=>x!==part):[...bookmarks,part];localStorage.setItem("electropedia_bookmarks",JSON.stringify(bookmarks));renderComponents();renderBookmarks()}
+function renderBookmarks(){const list=components.filter(c=>bookmarks.includes(c.partNumber));document.getElementById("bookmarkGrid").innerHTML=list.length?list.map(componentCard).join(""):`<div class="empty">Belum ada komponen tersimpan. Tekan ☆ pada kartu komponen.</div>`}
+function renderPinout(){const q=(document.getElementById("pinoutSearch").value||"").toLowerCase();const list=components.filter(c=>(c.partNumber+" "+c.name+" "+c.subcategory).toLowerCase().includes(q)).slice(0,8);document.getElementById("pinoutResult").innerHTML=list.length?list.map(c=>`<div class="tool-box" style="margin-bottom:12px"><h3>${escapeHtml(c.name)} <span class="badge">${escapeHtml(c.package)}</span></h3><div>${(c.pins||[]).map((p,i)=>`<div style="padding:9px;border-bottom:1px solid #173047"><b>Pin ${i+1}</b> — ${escapeHtml(p)}</div>`).join("")}</div></div>`).join(""):`<div class="empty">Masukkan nama/part number untuk mencari pinout.</div>`}
+
+const meterData=[
+["Resistor","Ω / Ohm","Matikan daya. Ukur dua terminal. Nilai harus dibandingkan dengan nominal dan toleransi; pengukuran in-circuit dapat dipengaruhi komponen lain.","Open → OL/tidak terukur. Short → mendekati 0 Ω. Nilai sangat menyimpang → investigasi."],
+["Diode","Diode Test","Matikan daya. Mode diode. Ukur forward dan reverse sesuai polaritas probe.","Forward menunjukkan drop sesuai jenis diode; reverse umumnya tidak konduksi pada diode yang baik, dalam batas alat."],
+["Transistor BJT","Diode Test","Identifikasi base dan jenis transistor dari datasheet. Uji junction Base-Emitter dan Base-Collector.","Short antarpin atau junction open dapat mengindikasikan kerusakan; pinout harus benar."],
+["MOSFET","Diode/Ohm","Pastikan gate tidak tersentuh sumber tegangan berbahaya. Uji body diode dan kemungkinan short D-S.","Gate rusak atau D-S short dapat menyebabkan rangkaian gagal."],
+["Kapasitor","Capacitance/ESR","Lepaskan dari rangkaian dan discharge dengan metode yang sesuai. Gunakan capacitance/ESR meter bila tersedia.","Short, kapasitansi turun, ESR tinggi, atau leakage abnormal perlu diperiksa."],
+["Continuity","Buzzer","Gunakan hanya pada rangkaian yang tidak bertegangan.","Buzzer menunjukkan jalur resistansi rendah; tidak selalu berarti dua titik secara fungsional boleh disambungkan."]
+];
+document.getElementById("meterCards").innerHTML=meterData.map(x=>`<div class="card"><div class="iconbox">🧪</div><h3>${x[0]}</h3><span class="badge">${x[1]}</span><p>${x[2]}</p><div class="notice">${x[3]}</div></div>`).join("");
+
+const symptoms={
+"Komponen panas":["Pastikan beban tidak short.","Ukur tegangan supply dan bandingkan rating.","Periksa arus beban.","Periksa disipasi panas/heatsink.","Bandingkan temperatur dengan board normal bila memungkinkan."],
+"Komponen short":["Matikan power.","Ukur resistance/continuity di rail terkait.","Pisahkan beban atau cabut komponen secara bertahap.","Gunakan current-limited supply bila prosedur dan alat mendukung.","Cari komponen yang abnormal panas secara aman."],
+"Output tidak keluar":["Verifikasi input supply.","Periksa ground/reference.","Ukur input dan output stage.","Periksa enable/reset.","Periksa komponen proteksi dan konektor."],
+"IC panas":["Matikan power bila temperatur tidak wajar.","Periksa short pada pin supply.","Periksa output yang terbebani.","Bandingkan dengan datasheet dan board normal.","Jangan langsung menyimpulkan IC rusak tanpa mengisolasi beban."],
+"Power supply mati":["Periksa fuse.","Periksa input.","Periksa rectifier.","Periksa capacitor bulk.","Periksa switch/MOSFET.","Periksa controller.","Periksa secondary dan feedback."]
+};
+document.getElementById("symptomCards").innerHTML=Object.keys(symptoms).map(k=>`<div class="card"><h3>${k}</h3><p>${symptoms[k].slice(0,2).join(" ")}</p><button class="btn" onclick="showDiagnosis('${esc(k)}')">Lihat langkah →</button></div>`).join("");
+function showDiagnosis(k){const steps=symptoms[k];document.getElementById("modalTitle").innerHTML=`<h2>${k}</h2>`;document.getElementById("modalBody").innerHTML=`<div class="notice danger">Mulai dari pemeriksaan yang paling aman. Untuk tegangan tinggi, gunakan prosedur keselamatan yang sesuai.</div><ol>${steps.map(s=>`<li style="padding:9px;color:#b8cada">${s}</li>`).join("")}</ol>`;document.getElementById("componentModal").classList.add("open")}
+
+const learning=[
+["LEVEL 1","Pemula","Tegangan, arus, resistor, kapasitor, diode, LED.","Mulai dari hukum Ohm dan cara membaca nilai komponen."],
+["LEVEL 2","Dasar","Transistor, relay, regulator, op-amp, IC.","Pahami fungsi pin dan rangkaian sederhana."],
+["LEVEL 3","Menengah","MOSFET, PWM, power supply, SMPS, motor driver.","Fokus pada switching, power dissipation, dan troubleshooting."],
+["LEVEL 4","Lanjutan","Mikrokontroler, ADC, DAC, komunikasi, embedded, power electronics.","Pelajari datasheet, timing, signal integrity, dan desain sistem."]
+];
+document.getElementById("learningCards").innerHTML=learning.map((x,i)=>`<div class="card"><span class="badge">${x[0]}</span><h3>${x[1]}</h3><p>${x[2]}</p><div class="notice">${x[3]}</div><div style="margin-top:12px"><div style="height:6px;background:#10273a;border-radius:5px"><div style="width:${[25,50,72,90][i]}%;height:100%;background:#28a9ff;border-radius:5px"></div></div></div></div>`).join("");
+
+const quiz=[
+["Komponen yang umum digunakan untuk membatasi arus adalah... ",["Resistor","Kapasitor","Induktor","Transformer"],0,"Resistor memiliki hubungan V=I×R sehingga dapat digunakan untuk membatasi arus."],
+["Pinout transistor 2N2222 selalu sama untuk semua manufacturer?",["Ya, selalu","Tidak, wajib cek datasheet","Hanya berbeda pada LED","Tidak ada pinout"],1,"Pinout dapat berbeda menurut package/manufacturer/varian."],
+["Mode multimeter yang tepat untuk menguji junction diode secara dasar adalah...",["Hz","Diode Test","AC Current","Capacitance"],1,"Mode diode memberikan indikasi forward voltage pada junction."],
+["Pada resistor kode 103, nilai umumnya adalah...",["103 Ω","1.03 Ω","10 kΩ","100 kΩ"],2,"10 × 10³ Ω = 10.000 Ω = 10 kΩ."],
+["Sebelum mengukur resistance pada board, tindakan utama adalah...",["Naikkan supply","Matikan daya","Pasang probe ke current jack","Hubungkan ke AC"],1,"Pengukuran resistance/continuity dilakukan pada rangkaian yang tidak bertegangan."]
+];
+let qi=0,score=0,answered=false;
+function renderQuiz(){const q=quiz[qi];document.getElementById("quizBox").innerHTML=`<span class="badge">Soal ${qi+1}/${quiz.length}</span><h3>${q[0]}</h3>${q[1].map((o,i)=>`<button class="quiz-option" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}<div id="quizFeedback"></div>`;document.getElementById("quizScore").textContent=`Skor: ${score}`;answered=false}
+function answerQuiz(i){if(answered)return;answered=true;const q=quiz[qi],buttons=document.querySelectorAll(".quiz-option");buttons[i].classList.add(i===q[2]?"correct":"wrong");if(i===q[2])score++;else buttons[q[2]].classList.add("correct");document.getElementById("quizFeedback").innerHTML=`<div class="result"><b>${i===q[2]?"Benar!":"Belum tepat."}</b><br>${q[3]}<br><br><button class="btn primary" onclick="nextQuiz()">${qi===quiz.length-1?"Ulangi Quiz":"Soal Berikutnya →"}</button></div>`}
+function nextQuiz(){qi=(qi+1)%quiz.length;if(qi===0)score=0;renderQuiz()}
+
+const arcade=[
+["🔌 Power & Ground","Periksa rail supply, ground, fuse, regulator, dan konektor. Jangan mengandalkan warna kabel saja."],
+["🧩 Communication","Untuk communication error, cek kabel, konektor, transceiver/driver, terminasi dan kondisi board pembanding."],
+["🎮 Input Player","Periksa button, joystick, encoder/I/O board, ground, supply, dan mapping input."],
+["🪙 Coin Acceptor","Periksa supply, pulse/output, ground, konfigurasi pulse, konektor dan mekanisme sensor."],
+["📇 Card / Sensor","Periksa supply sensor, output signal, alignment, kabel, connector, dan level logic."],
+["🌡 IC Panas","Bandingkan dengan board normal. Cari short pada rail dan beban sebelum mengganti IC."]
+];
+document.getElementById("arcadeCards").innerHTML=arcade.map(x=>`<div class="card"><div class="iconbox">${x[0].split(" ")[0]}</div><h3>${x[0].substring(x[0].indexOf(" ")+1)}</h3><p>${x[1]}</p></div>`).join("");
+
+const homeToolData=[["📦","Component Database","Cari komponen, marking, package, fungsi, pinout, dan informasi teknis.","components"],["🔌","Pinout Finder","Cari pin dan fungsi terminal komponen.","pinout"],["🧪","Multimeter Lab","Panduan pengukuran resistor, diode, transistor, MOSFET, kapasitor.","multimeter"],["🧮","Electronics Calculator","Ohm, LED resistor, divider, battery runtime, RC, dan lainnya.","calculator"],["⌘","Code Decoder","Decoder SMD resistor, capacitor, dan resistor color code.","decoder"],["🔧","Troubleshooting","Diagnosis awal berdasarkan gejala kerusakan.","troubleshoot"],["📚","Learning Mode","Kurikulum elektronika dari pemula sampai lanjutan.","learning"],["🕹","Arcade Lab","Panduan dasar troubleshooting elektronik mesin arcade.","arcade"]];
+document.getElementById("homeTools").innerHTML=homeToolData.map(x=>`<div class="card" onclick="showPage('${x[3]}')" style="cursor:pointer"><div class="iconbox">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p></div>`).join("");
+
+function renderHome(){document.getElementById("statComponents").textContent=components.length+"+";document.getElementById("popularComponents").innerHTML=components.slice(0,8).map(componentCard).join("")}
+function setupFilters(){const cats=[...new Set(components.map(c=>c.category))].sort(),pkgs=[...new Set(components.map(c=>c.package))].sort();document.getElementById("categoryFilter").innerHTML='<option value="">Semua kategori</option>'+cats.map(x=>`<option>${escapeHtml(x)}</option>`).join("");document.getElementById("packageFilter").innerHTML='<option value="">Semua package</option>'+pkgs.map(x=>`<option>${escapeHtml(x)}</option>`).join("")}
+
+function calcOhm(){const V=parseFloat(ohmV.value),I=parseFloat(ohmI.value),R=parseFloat(ohmR.value);let out;if(!isNaN(V)&&!isNaN(I)&&I!==0)out=`R = ${(V/I).toFixed(4)} Ω`;else if(!isNaN(V)&&!isNaN(R))out=`I = ${(V/R).toFixed(6)} A`;else if(!isNaN(I)&&!isNaN(R))out=`V = ${(I*R).toFixed(4)} V`;else out="Masukkan dua nilai.";ohmOut.textContent=out}
+function calcLed(){const v=+ledVs.value,vf=+ledVf.value,ma=+ledMa.value,r=(v-vf)/(ma/1000);ledOut.textContent=r>0?`R ≈ ${r.toFixed(1)} Ω. Pilih nilai standar di atasnya dan cek disipasi daya.`:"Input tidak valid."}
+function calcDivider(){const v=+vdVin.value,r1=+vdR1.value,r2=+vdR2.value;vdOut.textContent=`Vout ≈ ${(v*r2/(r1+r2)).toFixed(4)} V`}
+function calcBattery(){const ah=+batAh.value,w=+batW.value,v=+batV.value,e=+batEff.value/100;const h=ah*v/w*e;batOut.textContent=`Estimasi runtime ≈ ${h.toFixed(2)} jam (${(h*60).toFixed(0)} menit), dengan asumsi sederhana.`}
+function calcRC(){const r=+rcR.value,c=+rcC.value*1e-6,t=r*c;rcOut.textContent=`τ = ${t.toFixed(4)} s (${(t*1000).toFixed(2)} ms)`}
+function calcParallel(){const a=+rp1.value,b=+rp2.value;rpOut.textContent=`Rtotal ≈ ${(a*b/(a+b)).toFixed(3)} Ω`}
+function decodeSmd(){const s=smdCode.value.trim().toUpperCase();if(!/^\d{3,4}$/.test(s)){smdOut.textContent="Demo ini menerima kode numerik 3/4 digit.";return}const n=s.length===3?Number(s.slice(0,2)):Number(s.slice(0,3)),pow=s.length===3?Number(s[2]):Number(s[3]),oh=n*Math.pow(10,pow);smdOut.textContent=`${oh.toLocaleString("id-ID")} Ω = ${(oh/1000).toLocaleString("id-ID")} kΩ`}
+function decodeCap(){const s=capCode.value.trim();if(!/^\d{3}$/.test(s)){capOut.textContent="Masukkan 3 digit, contoh 104.";return}const pf=Number(s.slice(0,2))*Math.pow(10,Number(s[2]));capOut.textContent=`${pf.toLocaleString("id-ID")} pF = ${(pf/1000).toLocaleString("id-ID")} nF = ${(pf/1e6).toLocaleString("id-ID")} µF`}
+const colorNames=["Hitam","Coklat","Merah","Oranye","Kuning","Hijau","Biru","Ungu","Abu-abu","Putih"];function fillColors(){["c1","c2","c3"].forEach((id,i)=>document.getElementById(id).innerHTML=colorNames.map((x,j)=>`<option value="${j}">${x}</option>`).join(""));document.getElementById("c1").value=2;document.getElementById("c2").value=2;document.getElementById("c3").value=1;document.getElementById("c4").innerHTML=["±1%","±2%","±5%","±10%","±20%"].map((x,i)=>`<option value="${i}">${x}</option>`).join("");document.getElementById("c4").value=2}
+function decodeColor(){const a=+c1.value,b=+c2.value,m=+c3.value,t=["±1%","±2%","±5%","±10%","±20%"][+c4.value];const oh=(a*10+b)*Math.pow(10,m);colorOut.textContent=`${oh.toLocaleString("id-ID")} Ω ${t}`}
+function addComponent(){const c={name:newName.value.trim(),partNumber:newPart.value.trim()||("CUSTOM-"+Date.now()),category:newCat.value.trim()||"Custom",subcategory:"Custom",package:newPkg.value.trim()||"—",manufacturer:"User",technology:"Custom",status:"Demo",function:newFunc.value.trim()||"Belum diisi.",working:"Belum diisi.",spec:{Package:newPkg.value.trim()||"—"},pins:["Belum diisi"],apps:[],fail:[],tags:[]};if(!c.name)return alert("Nama wajib diisi.");const extra=JSON.parse(localStorage.getItem("electropedia_extra")||"[]");extra.push(c);localStorage.setItem("electropedia_extra",JSON.stringify(extra));components=[...seedComponents,...extra];setupFilters();renderHome();renderComponents();renderAdmin();newName.value=newPart.value=newFunc.value="";alert("Komponen ditambahkan ke database lokal browser.")}
+function renderAdmin(){const extra=components.slice(seedComponents.length);document.getElementById("adminList").innerHTML=extra.length?extra.map(c=>`<div class="card" style="margin-bottom:8px"><b>${escapeHtml(c.name)}</b> — ${escapeHtml(c.partNumber)} <button class="btn red" style="float:right" onclick="deleteExtra('${esc(c.partNumber)}')">Hapus</button></div>`).join(""):`<div class="empty">Belum ada data tambahan.</div>`}
+function deleteExtra(part){let e=JSON.parse(localStorage.getItem("electropedia_extra")||"[]").filter(c=>c.partNumber!==part);localStorage.setItem("electropedia_extra",JSON.stringify(e));components=[...seedComponents,...e];setupFilters();renderHome();renderAdmin();renderComponents()}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function esc(s){return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}
+document.getElementById("themeBtn").onclick=()=>document.body.classList.toggle("light");
+fillColors();setupFilters();renderHome();renderComponents();renderPinout();renderQuiz();
+</script>
+</body>
+</html>
